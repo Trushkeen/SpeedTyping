@@ -1,0 +1,10 @@
+C:\Users\public static void\source\repos\TypingStudy\bin\Debug\TypingStudy.exe.config
+C:\Users\public static void\source\repos\TypingStudy\bin\Debug\TypingStudy.exe
+C:\Users\public static void\source\repos\TypingStudy\bin\Debug\TypingStudy.pdb
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.csprojAssemblyReference.cache
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.Main.resources
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.Properties.Resources.resources
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.csproj.GenerateResource.cache
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.csproj.CoreCompileInputs.cache
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.exe
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.pdb
