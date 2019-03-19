@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace TypingStudy
 {
     public partial class Main : Form
     {
+        //НАСТРОЙКА ПАРАМЕТРОВ
+        int scoreLimit = 100; //Кол-во очков до победы
+        int timerDelay = 10; //Срабатывание таймера раз в n мс; поставить меньше, если есть разрывы между действиями
+
         Dict dict = new Dict();
         Dict easy, medium, hard;
         int score = 0;
         Stopwatch timer = new Stopwatch();
+        Stopwatch record = new Stopwatch();
+        Timer interval;
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -19,6 +26,17 @@ namespace TypingStudy
             InputLanguage.CurrentInputLanguage = InputLanguage.DefaultInputLanguage;
             groupBox1.Visible = false;
             timer.Start();
+            record.Restart();
+            interval = new Timer();
+            interval.Interval = timerDelay;
+            interval.Tick += Interval_Tick;
+            interval.Start();
+        }
+
+        private void Interval_Tick(object sender, EventArgs e)
+        {
+            lblTime.Text = "Время: " + record.Elapsed.Minutes + ":" + record.Elapsed.Seconds;
+            lblScore.Text = "Очки:" + score.ToString();
         }
 
         #region difficulties
@@ -40,17 +58,25 @@ namespace TypingStudy
 
         private void tbEnterWord_TextChanged(object sender, EventArgs e)
         {
-            if(lblCurrentWord.Text.ToLower() == tbEnterWord.Text.ToLower())
+            if (lblCurrentWord.Text.ToLower() == tbEnterWord.Text.ToLower())
             {
                 score += lblCurrentWord.Text.Length;
                 if (timer.ElapsedMilliseconds < 10000)
                 {
-                    score += Convert.ToInt32((10000 - timer.ElapsedMilliseconds)/1000);
+                    score += Convert.ToInt32((10000 - timer.ElapsedMilliseconds) / 1000);
                 }
-                lblScore.Text = "Очки:" + score.ToString();
                 lblCurrentWord.Text = dict.GetRandomWord();
                 tbEnterWord.Text = string.Empty;
                 timer.Restart();
+                if (score >= scoreLimit)
+                {
+                    lblScore.Text = "Очки:" + score.ToString();
+                    lblCurrentWord.Text = "Игра окончена!";
+                    groupBox1.Visible = true;
+                    score = 0;
+                    record.Stop();
+                    interval.Dispose();
+                }
             }
         }
 
@@ -60,17 +86,29 @@ namespace TypingStudy
             lblScore.Text = "Очки: " + score.ToString();
             try
             {
-                easy = new Dict("easy.txt");
-                dict = easy;
-                medium = new Dict("medium.txt");
-                hard = new Dict("hard.txt");
+                if (File.Exists("easy.txt"))
+                {
+                    easy = new Dict("easy.txt");
+                    dict = easy;
+                }
+                else throw new IOException("Не удалось загрузить \"легкий\" словарь", 1);
+                if (File.Exists("medium.txt"))
+                {
+                    medium = new Dict("medium.txt");
+                }
+                else throw new IOException("Не удалось загрузить \"средний\" словарь", 2);
+                if (File.Exists("hard.txt"))
+                {
+                    hard = new Dict("hard.txt");
+                }
+                else throw new IOException("Не удалось загрузить \"сложный\" словарь", 3);
             }
-            catch (Exception)
+            catch (IOException ex)
             {
-                MessageBox.Show("Не удалось загрузить словари");
-                rbEasy.Enabled = false;
-                rbMedium.Enabled = false;
-                rbHard.Enabled = false;
+                MessageBox.Show("Не удалось один или несколько словарей. Проверьте их расположение в папке программы");
+                if (ex.HResult == 1) { rbEasy.Enabled = false; rbEasy.Checked = false; }
+                if (ex.HResult == 2) rbMedium.Enabled = false;
+                if (ex.HResult == 3) rbHard.Enabled = false;
             }
         }
 
