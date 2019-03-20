@@ -17,7 +17,7 @@ namespace TypingStudy
 
         public void AddWords(string path)
         {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Пустой путь к файлу!");
+            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Не выбран файл!");
             else
                 Words = File.ReadAllText(path, Encoding.Default).Split();
         }

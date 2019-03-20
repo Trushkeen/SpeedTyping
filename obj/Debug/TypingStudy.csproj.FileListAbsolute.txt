@@ -8,3 +8,4 @@ C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.cspro
 C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.csproj.CoreCompileInputs.cache
 C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.exe
 C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.pdb
+C:\Users\public static void\source\repos\TypingStudy\obj\Debug\TypingStudy.Login.resources

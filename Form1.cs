@@ -16,73 +16,14 @@ namespace TypingStudy
         int score = 0;
         Stopwatch timer = new Stopwatch();
         Stopwatch record = new Stopwatch();
-        Timer interval;
+        Timer interval = new Timer();
+        bool isRoundStarted = false;
+        private string currentWord;
 
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            lblCurrentWord.Text = dict.GetRandomWord();
-            tbEnterWord.Enabled = true;
-            tbEnterWord.Focus();
-            InputLanguage.CurrentInputLanguage = InputLanguage.DefaultInputLanguage;
-            groupBox1.Visible = false;
-            timer.Start();
-            record.Restart();
-            interval = new Timer();
-            interval.Interval = timerDelay;
-            interval.Tick += Interval_Tick;
-            interval.Start();
-        }
-
-        private void Interval_Tick(object sender, EventArgs e)
-        {
-            lblTime.Text = "Время: " + record.Elapsed.Minutes + ":" + record.Elapsed.Seconds;
-            lblScore.Text = "Очки:" + score.ToString();
-        }
-
-        #region difficulties
-        private void rbEasy_CheckedChanged(object sender, EventArgs e)
-        {
-            dict = easy;
-        }
-
-        private void rbMedium_CheckedChanged(object sender, EventArgs e)
-        {
-            dict = medium;
-        }
-
-        private void rbHard_CheckedChanged(object sender, EventArgs e)
-        {
-            dict = hard;
-        }
-        #endregion
-
-        private void tbEnterWord_TextChanged(object sender, EventArgs e)
-        {
-            if (lblCurrentWord.Text.ToLower() == tbEnterWord.Text.ToLower())
-            {
-                score += lblCurrentWord.Text.Length;
-                if (timer.ElapsedMilliseconds < 10000)
-                {
-                    score += Convert.ToInt32((10000 - timer.ElapsedMilliseconds) / 1000);
-                }
-                lblCurrentWord.Text = dict.GetRandomWord();
-                tbEnterWord.Text = string.Empty;
-                timer.Restart();
-                if (score >= scoreLimit)
-                {
-                    lblScore.Text = "Очки:" + score.ToString();
-                    lblCurrentWord.Text = "Игра окончена!";
-                    groupBox1.Visible = true;
-                    score = 0;
-                    record.Stop();
-                    interval.Dispose();
-                }
-            }
-        }
-
-        public Main()
+        public Main(UserArguments authArgs)
         {
             InitializeComponent();
+            this.Text = "Пользователь " + authArgs.Username;
             lblScore.Text = "Очки: " + score.ToString();
             try
             {
@@ -112,10 +53,86 @@ namespace TypingStudy
             }
         }
 
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            if (!isRoundStarted)
+            {
+                isRoundStarted = true;
+                btnStart.Text = "Стоп";
+                currentWord = dict.GetRandomWord();
+                lblCurrentWord.Text = currentWord;
+                tbEnterWord.Enabled = true;
+                tbEnterWord.Focus();
+                InputLanguage.CurrentInputLanguage = InputLanguage.DefaultInputLanguage;
+                groupBox1.Visible = false;
+                timer.Start();
+                record.Restart();
+                interval.Interval = timerDelay;
+                interval.Tick += Interval_Tick;
+                interval.Start();
+            }
+            else
+            {
+                //TODO: логика остановки
+                isRoundStarted = false;
+                btnStart.Text = "Начать";
+            }
+        }
+
+        private void Interval_Tick(object sender, EventArgs e)
+        {
+            lblTime.Text = "Время: " + record.ElapsedMilliseconds/1000 + "." + record.ElapsedMilliseconds%100;
+            lblScore.Text = "Очки:" + score.ToString();
+        }
+
+        #region difficulties
+        private void rbEasy_CheckedChanged(object sender, EventArgs e)
+        {
+            dict = easy;
+        }
+
+        private void rbMedium_CheckedChanged(object sender, EventArgs e)
+        {
+            dict = medium;
+        }
+
+        private void rbHard_CheckedChanged(object sender, EventArgs e)
+        {
+            dict = hard;
+        }
+        #endregion
+
+        private void tbEnterWord_TextChanged(object sender, EventArgs e)
+        {
+            if (currentWord.ToUpper() == tbEnterWord.Text.ToUpper())
+            {
+                score += currentWord.Length;
+                if (timer.ElapsedMilliseconds < 10000)
+                {
+                    score += Convert.ToInt32((10000 - timer.ElapsedMilliseconds) / 1000);
+                }
+                currentWord = dict.GetRandomWord();
+                lblCurrentWord.Text = currentWord;
+                tbEnterWord.Text = string.Empty;
+                timer.Restart();
+                if (score >= scoreLimit)
+                {
+                    lblScore.Text = "Очки:" + score.ToString();
+                    lblCurrentWord.Text = "Игра окончена!";
+                    groupBox1.Visible = true;
+                    score = 0;
+                    record.Stop();
+                    interval.Dispose();
+                    tbEnterWord.Enabled = false;
+                }
+            }
+        }
+
         private void btnOpenCustomDict_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
+                ofd.Filter = "*.txt | *.txt";
                 ofd.ShowDialog();
                 try
                 {
@@ -129,6 +146,11 @@ namespace TypingStudy
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

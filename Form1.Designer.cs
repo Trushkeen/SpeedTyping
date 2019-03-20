@@ -31,6 +31,8 @@
             this.tbEnterWord = new System.Windows.Forms.TextBox();
             this.lblCurrentWord = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblTime = new System.Windows.Forms.Label();
+            this.lblScore = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnOpenCustomDict = new System.Windows.Forms.Button();
             this.rbCustom = new System.Windows.Forms.RadioButton();
@@ -38,8 +40,6 @@
             this.rbMedium = new System.Windows.Forms.RadioButton();
             this.rbEasy = new System.Windows.Forms.RadioButton();
             this.btnStart = new System.Windows.Forms.Button();
-            this.lblScore = new System.Windows.Forms.Label();
-            this.lblTime = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +80,24 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(496, 240);
             this.panel1.TabIndex = 3;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(12, 22);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(43, 13);
+            this.lblTime.TabIndex = 6;
+            this.lblTime.Text = "Время:";
+            // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.Location = new System.Drawing.Point(12, 9);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(35, 13);
+            this.lblScore.TabIndex = 5;
+            this.lblScore.Text = "Очки:";
             // 
             // groupBox1
             // 
@@ -165,24 +183,6 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // lblScore
-            // 
-            this.lblScore.AutoSize = true;
-            this.lblScore.Location = new System.Drawing.Point(12, 9);
-            this.lblScore.Name = "lblScore";
-            this.lblScore.Size = new System.Drawing.Size(35, 13);
-            this.lblScore.TabIndex = 5;
-            this.lblScore.Text = "Очки:";
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(12, 22);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(43, 13);
-            this.lblTime.TabIndex = 6;
-            this.lblTime.Text = "Время:";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,6 +191,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "Main";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
