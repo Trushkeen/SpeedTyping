@@ -13,17 +13,20 @@ namespace TypingStudy
 
         Dict dict = new Dict();
         Dict easy, medium, hard;
-        int score = 0;
+        double score = 0;
         Stopwatch timer = new Stopwatch();
         Stopwatch record = new Stopwatch();
         Timer interval = new Timer();
         bool isRoundStarted = false;
         private string currentWord;
+        enum Difficulties { Easy, Medium, Hard }
+        Difficulties difficulty;
 
         public Main(UserArguments authArgs)
         {
             InitializeComponent();
-            this.Text = "Пользователь " + authArgs.Username;
+            difficulty = Difficulties.Easy;
+            Text = "Пользователь " + authArgs.Username;
             lblScore.Text = "Очки: " + score.ToString();
             try
             {
@@ -81,7 +84,7 @@ namespace TypingStudy
 
         private void Interval_Tick(object sender, EventArgs e)
         {
-            lblTime.Text = "Время: " + record.ElapsedMilliseconds/1000 + "." + record.ElapsedMilliseconds%100;
+            lblTime.Text = "Время: " + record.ElapsedMilliseconds / 1000 + "." + record.ElapsedMilliseconds % 100;
             lblScore.Text = "Очки:" + score.ToString();
         }
 
@@ -89,16 +92,19 @@ namespace TypingStudy
         private void rbEasy_CheckedChanged(object sender, EventArgs e)
         {
             dict = easy;
+            difficulty = Difficulties.Easy;
         }
 
         private void rbMedium_CheckedChanged(object sender, EventArgs e)
         {
             dict = medium;
+            difficulty = Difficulties.Medium;
         }
 
         private void rbHard_CheckedChanged(object sender, EventArgs e)
         {
             dict = hard;
+            difficulty = Difficulties.Hard;
         }
         #endregion
 
@@ -109,7 +115,18 @@ namespace TypingStudy
                 score += currentWord.Length;
                 if (timer.ElapsedMilliseconds < 10000)
                 {
-                    score += Convert.ToInt32((10000 - timer.ElapsedMilliseconds) / 1000);
+                    switch (difficulty)
+                    {
+                        case Difficulties.Easy:
+                            score += Convert.ToDouble((10000 - timer.ElapsedMilliseconds) / 1000);
+                            break;
+                        case Difficulties.Medium:
+                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 1.25);
+                            break;
+                        case Difficulties.Hard:
+                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 1.5);
+                            break;
+                    }
                 }
                 currentWord = dict.GetRandomWord();
                 lblCurrentWord.Text = currentWord;
