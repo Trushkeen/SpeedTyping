@@ -21,11 +21,15 @@ namespace TypingStudy
         private string currentWord;
         enum Difficulties { Easy, Medium, Hard }
         Difficulties difficulty;
+        Records leaderboard = Records.GetObject();
+        UserArguments userArguments;
 
         public Main(UserArguments authArgs)
         {
+            leaderboard.LoadLeaderboard();
             InitializeComponent();
             difficulty = Difficulties.Easy;
+            userArguments = authArgs;
             Text = "Пользователь " + authArgs.Username;
             lblScore.Text = "Очки: " + score.ToString();
             try
@@ -137,6 +141,15 @@ namespace TypingStudy
                     lblScore.Text = "Очки:" + score.ToString();
                     lblCurrentWord.Text = "Игра окончена!";
                     groupBox1.Visible = true;
+                    try
+                    {
+                        leaderboard.AddRecord(new UserArguments(userArguments.Username, record.ElapsedMilliseconds));
+                        leaderboard.SaveLeaderboard();
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     score = 0;
                     record.Stop();
                     interval.Dispose();

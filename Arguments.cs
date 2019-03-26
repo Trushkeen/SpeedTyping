@@ -13,17 +13,20 @@ namespace TypingStudy
     {
         public string Username { get; }
         public bool IsGuest { get; }
-        public UserArguments(string username)
+        public double? Score { get; set; }
+        public UserArguments(string username, double? score = null)
         {
-            if(string.IsNullOrEmpty(username) && string.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrEmpty(username) && string.IsNullOrWhiteSpace(username))
             {
                 IsGuest = true;
                 Username = "Guest";
+                Score = score;
             }
             else
             {
                 IsGuest = false;
                 Username = username;
+                Score = score;
             }
         }
     }
