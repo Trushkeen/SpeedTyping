@@ -80,8 +80,7 @@ namespace TypingStudy
             }
             else
             {
-                //TODO: логика остановки
-                isRoundStarted = false;
+                EndRound(true);
                 btnStart.Text = "Начать";
             }
         }
@@ -138,22 +137,7 @@ namespace TypingStudy
                 timer.Restart();
                 if (score >= scoreLimit)
                 {
-                    lblScore.Text = "Очки:" + score.ToString();
-                    lblCurrentWord.Text = "Игра окончена!";
-                    groupBox1.Visible = true;
-                    try
-                    {
-                        leaderboard.AddRecord(new UserArguments(userArguments.Username, record.ElapsedMilliseconds));
-                        leaderboard.SaveLeaderboard();
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    score = 0;
-                    record.Stop();
-                    interval.Dispose();
-                    tbEnterWord.Enabled = false;
+                    EndRound(false);
                 }
             }
         }
@@ -181,6 +165,32 @@ namespace TypingStudy
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void EndRound(bool EndedByUser = false)
+        {
+            lblScore.Text = "Очки:" + score.ToString();
+            lblCurrentWord.Text = "Игра окончена!";
+            btnStart.Text = "Начать";
+            isRoundStarted = false;
+            groupBox1.Visible = true;
+            if (!EndedByUser)
+            {
+                try
+                {
+                    leaderboard.AddRecord(new UserArguments(userArguments.Username, record.ElapsedMilliseconds));
+                    leaderboard.SaveLeaderboard();
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else MessageBox.Show("Игра остановлена. Рекорд не записан", "Раунд прерван", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            score = 0;
+            record.Stop();
+            interval.Dispose();
+            tbEnterWord.Enabled = false;
         }
     }
 }
