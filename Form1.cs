@@ -124,10 +124,10 @@ namespace TypingStudy
                             score += Convert.ToDouble((10000 - timer.ElapsedMilliseconds) / 1000);
                             break;
                         case Difficulties.Medium:
-                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 1.25);
+                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 1.75);
                             break;
                         case Difficulties.Hard:
-                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 1.5);
+                            score += Convert.ToDouble(((10000 - timer.ElapsedMilliseconds) / 1000) * 2.5);
                             break;
                     }
                 }
@@ -162,6 +162,11 @@ namespace TypingStudy
             }
         }
 
+        private void btnLeaderboard_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(leaderboard.GetTop10());
+        }
+
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
@@ -191,6 +196,7 @@ namespace TypingStudy
             record.Stop();
             interval.Dispose();
             tbEnterWord.Enabled = false;
+            tbEnterWord.Text = string.Empty;
         }
     }
 }

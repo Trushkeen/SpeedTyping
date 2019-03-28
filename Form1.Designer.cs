@@ -40,6 +40,7 @@
             this.rbMedium = new System.Windows.Forms.RadioButton();
             this.rbEasy = new System.Windows.Forms.RadioButton();
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnLeaderboard = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -101,6 +102,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnLeaderboard);
             this.groupBox1.Controls.Add(this.btnOpenCustomDict);
             this.groupBox1.Controls.Add(this.rbCustom);
             this.groupBox1.Controls.Add(this.rbHard);
@@ -112,7 +114,7 @@
             this.groupBox1.Size = new System.Drawing.Size(496, 118);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Уровень сложности";
+            this.groupBox1.Text = "Настройки";
             // 
             // btnOpenCustomDict
             // 
@@ -183,6 +185,16 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // btnLeaderboard
+            // 
+            this.btnLeaderboard.Location = new System.Drawing.Point(409, 13);
+            this.btnLeaderboard.Name = "btnLeaderboard";
+            this.btnLeaderboard.Size = new System.Drawing.Size(75, 23);
+            this.btnLeaderboard.TabIndex = 5;
+            this.btnLeaderboard.Text = "Лидеры";
+            this.btnLeaderboard.UseVisualStyleBackColor = true;
+            this.btnLeaderboard.Click += new System.EventHandler(this.btnLeaderboard_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,6 +226,7 @@
         private System.Windows.Forms.RadioButton rbEasy;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Label lblScore;
+        private System.Windows.Forms.Button btnLeaderboard;
     }
 }
 
